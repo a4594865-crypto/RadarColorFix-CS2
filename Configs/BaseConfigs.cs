@@ -1,7 +1,7 @@
 using CounterStrikeSharp.API.Core;
 using System.Text.Json.Serialization;
 
-namespace RadarColorFix;
+namespace RadarColorFix.Configs;
 
 public class BaseConfigs : BasePluginConfig
 {
