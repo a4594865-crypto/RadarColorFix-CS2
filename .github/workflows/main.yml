@@ -20,12 +20,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
+          dotnet-quality: 'preview' # 🎯 確保順利抓取 .NET 10 環境
       
       - name: Restore dependencies
         run: dotnet restore
       
       - name: Build
-        run: dotnet build RadarColorFix.csproj -c Release -o ./RadarColorFix
+        # 🎯 關鍵修正：在尾端加上無視全家桶的參數，強迫瘦身
+        run: dotnet build RadarColorFix.csproj -c Release -o ./RadarColorFix --no-self-contained -p:CopyLocalLockFileAssemblies=false
 
       - name: Create release asset
         if: github.event_name == 'release'
