@@ -1,0 +1,38 @@
+name: Plugin builder and release
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+          dotnet-quality: 'preview'
+      
+
+       Pemb:
+      - name: Publish Plugin
+        run: dotnet publish RadarColorFix.csproj -c Release -o ./package/addons/counterstrikesharp/plugins/RadarColorFix
+
+      - name: Create release asset
+        run: |
+          cd package && zip -r ../RadarColorFix.zip * && cd ..
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest 
+          name: RadarColorFix 最新編譯版
+          files: ./RadarColorFix.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
