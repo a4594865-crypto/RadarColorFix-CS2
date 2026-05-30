@@ -8,11 +8,11 @@ using RadarColorFix.Services;
 
 namespace RadarColorFix;
 
-[MinimumApiVersion(346)]
+[MinimumApiVersion(369)]
 public class RadarColorFix : BasePlugin, IPluginConfig<BaseConfigs>
 {
 	public override string ModuleName => "RadarColorFix";
-	public override string ModuleVersion => "1.0.1";
+	public override string ModuleVersion => "1.0.2";
 	public override string ModuleAuthor => "luca.uy";
 	public override string ModuleDescription => "Fixes the issue of duplicate colors on the radar";
 
