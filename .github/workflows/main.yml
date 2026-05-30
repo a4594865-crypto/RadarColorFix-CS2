@@ -1,8 +1,11 @@
 name: Plugin builder and release
 
 on:
-  push:
-    branches: [ "main" ]    # 🎯 只要推送到 main 分支就自動觸發打包
+  pull_request:
+    branches: [ "main" ]
+  release:
+    types:
+      - created
   workflow_dispatch:
 
 jobs:
@@ -17,20 +20,23 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 10.0.x
-          dotnet-quality: 'preview' # 🎯 確保 .NET 10 預覽版通道順利獲取
       
-      - name: Publish Plugin
-        run: dotnet publish RadarColorFix.csproj -c Release -o ./package/addons/counterstrikesharp/plugins/RadarColorFix
+      - name: Restore dependencies
+        run: dotnet restore
+      
+      - name: Build
+        run: dotnet build RadarColorFix.csproj -c Release -o ./RadarColorFix
 
       - name: Create release asset
+        if: github.event_name == 'release'
         run: |
-          cd package && zip -r ../RadarColorFix.zip * && cd ..
+          zip -r RadarColorFix-${{ github.event.release.tag_name }}.zip ./RadarColorFix
 
       - name: Upload release asset
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest          # 🎯 每次都會覆蓋或更新到名為 latest 的 Release 頁面
-          name: RadarColorFix 最新編譯版
-          files: ./RadarColorFix.zip
+          files: |
+            ./RadarColorFix-${{ github.event.release.tag_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
