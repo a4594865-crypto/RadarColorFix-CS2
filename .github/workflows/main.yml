@@ -1,11 +1,8 @@
 name: Plugin builder and release
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
-  release:
-    types:
-      - created
   workflow_dispatch:
 
 jobs:
@@ -29,15 +26,11 @@ jobs:
         run: dotnet build RadarColorFix.csproj -c Release -o ./RadarColorFix --no-self-contained -p:CopyLocalLockFileAssemblies=false
 
       - name: Create release asset
-        if: github.event_name == 'release'
         run: |
-          zip -r RadarColorFix-${{ github.event.release.tag_name }}.zip ./RadarColorFix
+          zip -r RadarColorFix.zip ./RadarColorFix
 
-      - name: Upload release asset
-        if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v2
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: |
-            ./RadarColorFix-${{ github.event.release.tag_name }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: RadarColorFix-官方純淨版
+          path: ./RadarColorFix.zip
