@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
-        <OutputPath>bin\Release\RadarColorFix\</OutputPath>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <DebugType>none</DebugType>
+        
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
     </PropertyGroup>
 
     <ItemGroup>
